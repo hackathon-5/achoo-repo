@@ -24,12 +24,22 @@ angular.module('starter.controllers', [])
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
-.controller('StartCtrl', function($scope, $stateParams) {
+.controller('StartCtrl', function($scope, $rootScope, $state, $stateParams) {
+	$scope.address = '';
+	$rootScope.figures = {
+		address: '',
+		roofSize: 0,
+		homeSize: 0
+	};
 
+	$scope.onAddressChange = function() {
+		$rootScope.figures.address = angular.element(document.getElementById('addressField'))[0].value;
+		if (/^[a-zA-Z0-9\s,'-]*$/i.test($rootScope.figures.address)) {
+			$state.go('app.tilt');
+		}
+	}
 })
-.controller('TraceCtrl', function($scope, $stateParams) {
+.controller('TraceCtrl', function($scope, $stateParams, $ionicLoading) {
 	$scope.roofSize = 0;
 	$scope.homeSize = 0;
 })

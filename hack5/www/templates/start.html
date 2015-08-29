@@ -4,6 +4,6 @@
 		<button ui-sref="app.trace" class="button button-calm">Get Started</button>
 	</div>
 	<label for="addressField" class="sr-only">Address</label>
-	<input type="text" id="addressField" g-places-autocomplete force-selection="true" ng-model="roofSize" />
+	<input type="text" id="addressField" g-places-autocomplete force-selection="true" ng-model="address" ng-change="onAddressChange()"/>
   </ion-content>
 </ion-view>
