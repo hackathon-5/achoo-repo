@@ -99,18 +99,28 @@ angular.module('starter.controllers', [])
   // }, 0);
 })
 
-.controller('TraceCtrl', function($scope, $stateParams) {
+.controller('TraceCtrl', function($scope, $stateParams, $ionicHistory) {
 	$scope.roofSize = 0;
 	$scope.homeSize = 0;
+
+  $scope.goBack = function() {
+    $ionicHistory.goBack();
+  };
+  $scope.saveAndContinue = function() {
+    $state.go('app.tilt');
+  }
 })
 
-.controller('TiltCtrl', function($scope, $stateParams,  $ionicHistory, $cordovaDeviceMotion) {
+.controller('TiltCtrl', function($scope, $stateParams, $ionicHistory, $state, $cordovaDeviceMotion) {
 
   console.log('TiltCtrl');
 
   $scope.goBack = function() {
     $ionicHistory.goBack();
   };
+  $scope.saveAndContinue = function() {
+    $state.go('app.results');
+  }
 
   // if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
     // document.addEventListener("deviceready", onDeviceReady, false);
@@ -223,7 +233,14 @@ angular.module('starter.controllers', [])
 
   // }, false);
 
-
-
 })
+
+.controller('ResultsCtrl', function($scope, $stateParams, $ionicHistory) {
+  $scope.roofSize = 0;
+  $scope.homeSize = 0;
+
+  $scope.goBack = function() {
+    $ionicHistory.goBack();
+  };
+});
 ;
