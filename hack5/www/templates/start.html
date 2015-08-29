@@ -1,7 +1,9 @@
 <ion-view view-title="Welcome">
   <ion-content style="background: url('img/splash-1.jpg') no-repeat top center fixed; -moz-background-size: cover; background-size: cover;">
 	<div style="margin-top: 300px; text-align: center; z-index: 2;">
-		<button class="button button-calm">Get Started</button>
+		<button ui-sref="app.trace" class="button button-calm">Get Started</button>
 	</div>
+	<label for="addressField" class="sr-only">Address</label>
+	<input type="text" id="addressField" g-places-autocomplete force-selection="true" ng-model="roofSize" />
   </ion-content>
 </ion-view>
