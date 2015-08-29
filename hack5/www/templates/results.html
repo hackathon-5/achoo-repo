@@ -1,0 +1,51 @@
+<ion-view view-title="Results">
+  <ion-content>
+    <div class="main-wrap">
+      <!-- <h3></h3> -->
+      <!-- <div class="list list-inset">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Angle of roof (in degrees)</span>
+          <input type="text" placeholder="ex. 60">
+        </label>
+      </div> -->
+      <h3 class="positive content padding double-padding-x">What percent of the roof ({{roofSize}} sq. ft.) will be covered by solar panels?</h3>
+      <div class="list">
+        <!-- <h3>What percent of the roof ({{roofSize}} sq. ft.) will be covered by solar panels?</h3> -->
+        <div class="item range range-positive">
+          <!-- <i class="icon ion-ios-sunny-outline"></i> -->
+          <span>{{rangeMin}}%</span>
+          <input type="range" name="sqFtRange" ng-attr-min="{{rangeMin}}" ng-attr-max="{{rangeMax}}" ng-model="rangeVal", ng-change="updateCalc(rangeVal)">
+          <span>{{rangeMax}}%</span>
+          <!-- <i class="icon ion-ios-sunny"></i> -->
+        </div>
+        <div class="card">
+          <div class="item item-text-wrap">
+            <p>Selected: <strong>{{rangeVal}}% ({{roofSize*(rangeVal/100)}} sq. ft.)</strong></p>
+            <p>Energy Per Year: <strong>{{kwhPerYear}} kWh</strong></p>
+          </div>
+        </div>
+        <button class="button button-positive button-block" ng-click="calcCost()" style="margin: 0;">Calculate savings</button>
+        <div class="card">
+          <div class="item item-text-wrap" ng-show="cost">
+            Average savings cost of electricity for a average household: ${{cost}} / year
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col">
+          <button class="button button-block button-stable" ng-click="goBack()" style="margin: 0;">
+            &#10094; Back
+          </button>
+        </div>
+        <div class="col">
+          <button class="button button-block button-assertive" style="margin: 0;">
+            Next &#10095;
+          </button>
+        </div>
+      </div> -->
+    </div>
+  </ion-content>
+  <!-- <div class="bar bar-footer bar-clear">
+    <div class="title">Footer</div>
+  </div> -->
+</ion-view>

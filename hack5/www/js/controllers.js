@@ -114,7 +114,7 @@ angular.module('starter.controllers', [])
   // }, 0);
 })
 
-.controller('TraceCtrl', function($scope, $rootScope, $stateParams, $ionicLoading) {
+.controller('TraceCtrl', function($scope, $rootScope, $stateParams, $ionicLoading, $ionicHistory, $state) {
     $scope.roofSize = 0;
     $scope.homeSize = 0;
 
@@ -145,11 +145,14 @@ angular.module('starter.controllers', [])
       var marker;
 
       geocoder.geocode({'address': $rootScope.figures.address },
-                       function(results, status) {
+       function(results, status) {
 
+        console.log('results', results);
         if (status == google.maps.GeocoderStatus.OK) {
 
+
           var coords = results[0].geometry.location;
+          console.log('coords', coords)
           map.setCenter(coords);
           $rootScope.figures.latLan = Object.keys(coords).map(function(k){ return coords[k] }) + '';
 
@@ -212,41 +215,42 @@ angular.module('starter.controllers', [])
     // onDeviceReady();
   // }
 
-  var show = function() {
-     console.log("Orientation type is " + screen.orientation.type);
-     console.log("Orientation angle is " + screen.orientation.angle);
-  }
+  // var show = function() {
+  //    console.log("Orientation type is " + screen.orientation.type);
+  //    console.log("Orientation angle is " + screen.orientation.angle);
+  // }
 
-  screen.orientation.addEventListener("change", show);
+  // screen.orientation.addEventListener("change", show);
 
 
   $ionicPlatform.ready(function() {
-    return;
+  // function onDeviceReady() {
     console.log('navigator.accelerometer', navigator, navigator.accelerometer);
 
-    navigator.accelerometer.getCurrentAcceleration(function(result) {
-      var X = result.x;
-      var Y = result.y;
-      var Z = result.z;
-      var timeStamp = result.timestamp;
-      console.log('getCurrentAcceleration result', result);
-    }, function(err) {
-      // An error occurred. Show a message to the user
-      console.log('getCurrentAcceleration error', result);
-    });
+  //   navigator.accelerometer.getCurrentAcceleration(function(result) {
+  //     var X = result.x;
+  //     var Y = result.y;
+  //     var Z = result.z;
+  //     var timeStamp = result.timestamp;
+  //     console.log('getCurrentAcceleration result', result);
+  //   }, function(err) {
+  //     // An error occurred. Show a message to the user
+  //     console.log('getCurrentAcceleration error', result);
+  //   });
 
-      // if ($cordovaDeviceMotion)
-    var watch = navigator.accelerometer.watchAcceleration(function(result) {
-      console.log('watchAcceleration result', result);
-      $scope.result = result;
-      var X = result.x;
-      var Y = result.y;
-      var Z = result.z;
-      var timeStamp = result.timestamp;
-    }, function() {
-      console.log('watchAcceleration error', error);
-    }, { frequency: 20000 });
-
+  //     // if ($cordovaDeviceMotion)
+  //   var watch = navigator.accelerometer.watchAcceleration(function(result) {
+  //     console.log('watchAcceleration result', result);
+  //     $scope.result = result;
+  //     var X = result.x;
+  //     var Y = result.y;
+  //     var Z = result.z;
+  //     var timeStamp = result.timestamp;
+  //   }, function() {
+  //     console.log('watchAcceleration error', error);        
+  //   }, { frequency: 20000 });
+ 
+  // }
   });
 
   // document.addEventListener('devicemotion', function(event) {
@@ -319,9 +323,60 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ResultsCtrl', function($scope, $stateParams, $ionicHistory) {
-  $scope.roofSize = 0;
+.controller('ResultsCtrl', function($scope, $stateParams, $ionicHistory, $state, $timeout, $http, $rootScope) {
+  $scope.roofSize = 1000;
   $scope.homeSize = 0;
+
+  $scope.rangeMin = 0;
+  $scope.rangeMax = 100;  
+
+  $scope.rangeVal = null;
+
+  $timeout(function() {
+    $scope.rangeVal = ($scope.rangeMax-$scope.rangeMin)/2;
+  }, 50);
+
+  function calcKWh(roofSize, percentCoverage) {
+    // percentCoverage (1-100)
+    var 
+      wattsPerPanel = 230,
+      sizeOfPanel = 10.7639, // sq ft
+      panelSize = roofSize * (percentCoverage/100),
+      hoursPerDay = 5,
+      daysInYear = 365;
+
+    return Math.round((wattsPerPanel * (panelSize/sizeOfPanel) * hoursPerDay * daysInYear) / 1000);
+  }
+
+  $scope.$watch("rangeVal", function(newValue, oldValue) {
+    console.log('rangeVal', newValue)
+    $scope.kwhPerYear = calcKWh($scope.roofSize, newValue);
+    // calcCost();
+  });
+
+  $scope.updateCalc = function(val) {
+    console.log('updateCalc', val, $scope.roofSize, $scope.rangeVal)
+    // console.log('updateCalc', calcKWh($scope.roofSize, $scope.rangeVal))
+    // $scope.kwhPerYear = 0;
+    $scope.rangeVal = val;
+    // $scope.kwhPerYear = calcKWh($scope.roofSize, parseInt(val));
+  };
+
+  $scope.calcCost = function() {
+    var
+      lat = $rootScope.latLan ? $rootScope.latLan.split(',')[0] : 32.90011,
+      lon = $rootScope.latLan ? $rootScope.latLan.split(',')[1] : -79.915778
+
+    $http.get('http://developer.nrel.gov/api/utility_rates/v3.json?api_key=u3VTRy4t0XAHd2ceXWB5Cn75LO55FAQtxkdecMPj&lat='+lat+'&lon='+lon).
+      success(function(data, status, headers, config) {
+        $scope.energyCostKWh = data.outputs.residential;
+        $scope.cost = Math.round(data.outputs.residential * $scope.kwhPerYear);
+      }).
+      error(function(data, status, headers, config) {
+        // log error
+      });
+  }
+
 
   $scope.goBack = function() {
     $ionicHistory.goBack();

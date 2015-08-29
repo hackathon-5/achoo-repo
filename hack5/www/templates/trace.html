@@ -1,19 +1,22 @@
 <ion-view view-title="Trace">
   <ion-content>
+    <div class="main-wrap">
 
-    <h1>Trace</h1>
-    <div id="map" data-tap-disabled="true"></div>
-    <div class="row">
-      <div class="col">
-        <button type="button" class="button button-block button-stable" ng-click="goBack()" style="margin: 0;">
-          &#10094; Back
-        </button>
+      <h3 class="positive content padding double-padding-x">Trace</h3>
+      <div id="map" data-tap-disabled="true"></div>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="button button-block button-stable" ng-click="goBack()" style="margin: 0;">
+            &#10094; Back
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="button button-block button-assertive" ng-click="saveAndContinue()" style="margin: 0;">
+            Next &#10095;
+          </button>
+        </div>
       </div>
-      <div class="col">
-        <button type="button" class="button button-block button-assertive" ui-sref="app.tilt" style="margin: 0;">
-          Next &#10095;
-        </button>
-      </div>
+      <!-- <a class="button button-block button-assertive" ui-sref="app.tilt" style="margin: 0;">Next</a> -->
     </div>
   </ion-content>
 </ion-view>
