@@ -11,34 +11,6 @@ angular.module('starter.controllers', [])
 
   // Form data for the login modal
   $scope.loginData = {};
-
-  // // Create the login modal that we will use later
-  // $ionicModal.fromTemplateUrl('templates/login.html', {
-  //   scope: $scope
-  // }).then(function(modal) {
-  //   $scope.modal = modal;
-  // });
-
-  // // Triggered in the login modal to close it
-  // $scope.closeLogin = function() {
-  //   $scope.modal.hide();
-  // };
-
-  // // Open the login modal
-  // $scope.login = function() {
-  //   $scope.modal.show();
-  // };
-
-  // // Perform the login action when the user submits the login form
-  // $scope.doLogin = function() {
-  //   console.log('Doing login', $scope.loginData);
-
-  //   // Simulate a login delay. Remove this and replace with your login
-  //   // code if using a login system
-  //   $timeout(function() {
-  //     $scope.closeLogin();
-  //   }, 1000);
-  // };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -54,7 +26,13 @@ angular.module('starter.controllers', [])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
+.controller('StartCtrl', function($scope, $stateParams) {
 
+})
+.controller('TraceCtrl', function($scope, $stateParams) {
+	$scope.roofSize = 0;
+	$scope.homeSize = 0;
+})
 
 .controller('TiltCtrl', function($scope, $stateParams, $cordovaDeviceMotion) {
 
@@ -64,11 +42,11 @@ angular.module('starter.controllers', [])
   //   var x = event.acceleration.x;
   //   var y = event.acceleration.y;
   //   var z = event.acceleration.z;
-   
+
   //   var ralpha = event.rotationRate.alpha;
   //   var rbeta = event.rotationRate.beta;
   //   var rgamma = event.rotationRate.gamma;
-   
+
   //   var interval = event.interval;
 
   //   console.log('event', event);
@@ -97,12 +75,12 @@ angular.module('starter.controllers', [])
 
   //   // if ($cordovaDeviceMotion)
   //   var watch = $cordovaDeviceMotion.watchAcceleration(options);
-    
+
   //   watch.then(
   //     null,
   //     function(error) {
   //     // An error occurred
-  //       console.log('error2', error);        
+  //       console.log('error2', error);
   //     },
   //     function(result) {
   //       console.log('result2', result);
