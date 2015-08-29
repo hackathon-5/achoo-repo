@@ -12,33 +12,33 @@ angular.module('starter.controllers', [])
   // Form data for the login modal
   $scope.loginData = {};
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+  // // Create the login modal that we will use later
+  // $ionicModal.fromTemplateUrl('templates/login.html', {
+  //   scope: $scope
+  // }).then(function(modal) {
+  //   $scope.modal = modal;
+  // });
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
+  // // Triggered in the login modal to close it
+  // $scope.closeLogin = function() {
+  //   $scope.modal.hide();
+  // };
 
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
+  // // Open the login modal
+  // $scope.login = function() {
+  //   $scope.modal.show();
+  // };
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+  // // Perform the login action when the user submits the login form
+  // $scope.doLogin = function() {
+  //   console.log('Doing login', $scope.loginData);
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
+  //   // Simulate a login delay. Remove this and replace with your login
+  //   // code if using a login system
+  //   $timeout(function() {
+  //     $scope.closeLogin();
+  //   }, 1000);
+  // };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -58,57 +58,75 @@ angular.module('starter.controllers', [])
 
 .controller('TiltCtrl', function($scope, $stateParams, $cordovaDeviceMotion) {
 
-  console.log('TiltCtrl')
+  console.log('TiltCtrl');
 
-  document.addEventListener("deviceready", function () {
+  // document.addEventListener('devicemotion', function(event) {
+  //   var x = event.acceleration.x;
+  //   var y = event.acceleration.y;
+  //   var z = event.acceleration.z;
+   
+  //   var ralpha = event.rotationRate.alpha;
+  //   var rbeta = event.rotationRate.beta;
+  //   var rgamma = event.rotationRate.gamma;
+   
+  //   var interval = event.interval;
 
-    $cordovaDeviceMotion.getCurrentAcceleration().then(function(result) {
-      var X = result.x;
-      var Y = result.y;
-      var Z = result.z;
-      var timeStamp = result.timestamp;
-      console.log('result', result);
-    }, function(err) {
-      // An error occurred. Show a message to the user
-    });
+  //   console.log('event', event);
 
-  }, false);
+  // });
 
+  // document.addEventListener("deviceready", function () {
 
-  // watch Acceleration
-  var options = { frequency: 20000 };
+  //   if ($cordovaDeviceMotion) $cordovaDeviceMotion.getCurrentAcceleration().then(function(result) {
+  //     var X = result.x;
+  //     var Y = result.y;
+  //     var Z = result.z;
+  //     var timeStamp = result.timestamp;
+  //     console.log('result', result);
+  //   }, function(err) {
+  //     // An error occurred. Show a message to the user
+  //   });
 
-  document.addEventListener("deviceready", function () {
-
-    var watch = $cordovaDeviceMotion.watchAcceleration(options);
-    if (watch) watch.then(
-      null,
-      function(error) {
-      // An error occurred
-      },
-      function(result) {
-        console.log('result2', result);
-        $scope.result = result;
-        var X = result.x;
-        var Y = result.y;
-        var Z = result.z;
-        var timeStamp = result.timestamp;
-    });
+  // }, false);
 
 
-    if (watch) watch.clearWatch();
-    // OR
-    if (watch) $cordovaDeviceMotion.clearWatch(watch)
-      .then(function(result) {
-        // success
-        console.log('result3', result);
-        $scope.result = result;
+  // // watch Acceleration
+  // var options = { frequency: 20000 };
 
-        }, function (error) {
-        // error
-      });
+  // document.addEventListener("deviceready", function () {
 
-  }, false);
+  //   // if ($cordovaDeviceMotion)
+  //   var watch = $cordovaDeviceMotion.watchAcceleration(options);
+    
+  //   watch.then(
+  //     null,
+  //     function(error) {
+  //     // An error occurred
+  //       console.log('error2', error);        
+  //     },
+  //     function(result) {
+  //       console.log('result2', result);
+  //       $scope.result = result;
+  //       var X = result.x;
+  //       var Y = result.y;
+  //       var Z = result.z;
+  //       var timeStamp = result.timestamp;
+  //   });
+
+
+  //   watch.clearWatch();
+  //   // OR
+  //   $cordovaDeviceMotion.clearWatch(watch)
+  //     .then(function(result) {
+  //       // success
+  //       console.log('result3', result);
+  //       $scope.result = result;
+
+  //       }, function (error) {
+  //       console.log('error3', error);
+  //     });
+
+  // }, false);
 
 
 
