@@ -9,8 +9,75 @@ angular.module('starter.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-  // Form data for the login modal
-  $scope.loginData = {};
+
+  ////////////////////////////////////////
+    // Layout Methods
+    ////////////////////////////////////////
+
+    $scope.hideNavBar = function() {
+        document.getElementsByTagName('ion-nav-bar')[0].style.display = 'none';
+    };
+
+    $scope.showNavBar = function() {
+        document.getElementsByTagName('ion-nav-bar')[0].style.display = 'block';
+    };
+
+    $scope.noHeader = function() {
+        var content = document.getElementsByTagName('ion-content');
+        for (var i = 0; i < content.length; i++) {
+            if (content[i].classList.contains('has-header')) {
+                content[i].classList.toggle('has-header');
+            }
+        }
+    };
+
+    $scope.setExpanded = function(bool) {
+        $scope.isExpanded = bool;
+    };
+
+    $scope.setHeaderFab = function(location) {
+        var hasHeaderFabLeft = false;
+        var hasHeaderFabRight = false;
+
+        switch (location) {
+            case 'left':
+                hasHeaderFabLeft = true;
+                break;
+            case 'right':
+                hasHeaderFabRight = true;
+                break;
+        }
+
+        $scope.hasHeaderFabLeft = hasHeaderFabLeft;
+        $scope.hasHeaderFabRight = hasHeaderFabRight;
+    };
+
+    $scope.hasHeader = function() {
+        var content = document.getElementsByTagName('ion-content');
+        for (var i = 0; i < content.length; i++) {
+            if (!content[i].classList.contains('has-header')) {
+                content[i].classList.toggle('has-header');
+            }
+        }
+
+    };
+
+    $scope.hideHeader = function() {
+        $scope.hideNavBar();
+        $scope.noHeader();
+    };
+
+    $scope.showHeader = function() {
+        $scope.showNavBar();
+        $scope.hasHeader();
+    };
+
+    $scope.clearFabs = function() {
+        var fabs = document.getElementsByClassName('button-fab');
+        if (fabs.length && fabs.length > 1) {
+            fabs[0].remove();
+        }
+    };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -26,17 +93,67 @@ angular.module('starter.controllers', [])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
-.controller('StartCtrl', function($scope, $stateParams) {
-
+.controller('StartCtrl', function($scope, $stateParams, $timeout) {
+  // $timeout(function() {
+  //     $scope.$parent.hideHeader();
+  // }, 0);
 })
+
 .controller('TraceCtrl', function($scope, $stateParams) {
 	$scope.roofSize = 0;
 	$scope.homeSize = 0;
 })
 
-.controller('TiltCtrl', function($scope, $stateParams, $cordovaDeviceMotion) {
+.controller('TiltCtrl', function($scope, $stateParams,  $ionicHistory, $cordovaDeviceMotion) {
 
   console.log('TiltCtrl');
+
+  $scope.goBack = function() {
+    $ionicHistory.goBack();
+  };
+
+  // if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+    // document.addEventListener("deviceready", onDeviceReady, false);
+  // } else {
+    // document.addEventListener("deviceready", onDeviceReady, false);
+    // onDeviceReady();
+  // }
+
+  var show = function() {
+     console.log("Orientation type is " + screen.orientation.type);
+     console.log("Orientation angle is " + screen.orientation.angle);
+  }
+
+  screen.orientation.addEventListener("change", show);
+
+
+  function onDeviceReady() {
+    console.log('navigator.accelerometer', navigator, navigator.accelerometer);
+
+    navigator.accelerometer.getCurrentAcceleration(function(result) {
+      var X = result.x;
+      var Y = result.y;
+      var Z = result.z;
+      var timeStamp = result.timestamp;
+      console.log('getCurrentAcceleration result', result);
+    }, function(err) {
+      // An error occurred. Show a message to the user
+      console.log('getCurrentAcceleration error', result);
+    });
+
+      // if ($cordovaDeviceMotion)
+    var watch = navigator.accelerometer.watchAcceleration(function(result) {
+      console.log('watchAcceleration result', result);
+      $scope.result = result;
+      var X = result.x;
+      var Y = result.y;
+      var Z = result.z;
+      var timeStamp = result.timestamp;
+    }, function() {
+      console.log('watchAcceleration error', error);        
+    }, { frequency: 20000 });
+ 
+  }
 
   // document.addEventListener('devicemotion', function(event) {
   //   var x = event.acceleration.x;
@@ -49,7 +166,7 @@ angular.module('starter.controllers', [])
 
   //   var interval = event.interval;
 
-  //   console.log('event', event);
+  //   console.log('devicemotion event', event);
 
   // });
 

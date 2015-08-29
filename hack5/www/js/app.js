@@ -54,6 +54,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'google.
       }
     }
   })
+
   .state('app.tilt', {
     url: '/tilt',
     views: {

@@ -3,10 +3,15 @@
   "private": "true",
   "devDependencies": {
     "angular-animate": "1.4.3",
-    "angular-ui-router": "0.2.13",
-    "angular-sanitize": "1.4.3",
     "angular-google-places-autocomplete": "~0.2.7",
+    "angular-material": "~0.10.1",
+    "angular-sanitize": "1.4.3",
+    "angular-ui-router": "0.2.13",
     "ionic": "driftyco/ionic-bower#1.1.0",
+    "ionic-material": "~0.4.2",
     "ngCordova": "~0.1.20-alpha"
+  },
+  "resolutions": {
+    "ionic": "driftyco/ionic-bower#1.1.0"
   }
 }
