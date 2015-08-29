@@ -92,28 +92,31 @@ angular.module('starter.controllers', [])
 })
 
 .controller('StartCtrl', function($scope, $rootScope, $state, $stateParams) {
-	$scope.address = '';
-	$rootScope.figures = {
-		address: '',
-		roofSize: 0,
-		homeSize: 0
-	};
+    $rootScope.figures = {
+        address: '',
+        roofSize: 0,
+        homeSize: 0
+    };
 
-	$scope.onAddressChange = function() {
-		$rootScope.figures.address = angular.element(document.getElementById('addressField'))[0].value;
-		if (/^[a-zA-Z0-9\s,'-]*$/i.test($rootScope.figures.address)) {
-			$state.go('app.tilt');
-		}
-	}
+    $scope.onAddressChange = function() {
+        var address = angular.element(document.getElementById('addressField'))[0].value;
+        $scope.address = address;
+        if (address && /^[a-zA-Z0-9\s,'-]*$/i.test(address)) {
+            $rootScope.figures.address = address;
+            $scope.address = null;
+
+            $state.go('app.trace');
+        }
+    }
 
   // $timeout(function() {
   //     $scope.$parent.hideHeader();
   // }, 0);
 })
 
-.controller('TraceCtrl', function($scope, $stateParams, $ionicLoading) {
-	$scope.roofSize = 0;
-	$scope.homeSize = 0;
+.controller('TraceCtrl', function($scope, $rootScope, $stateParams, $ionicLoading) {
+    $scope.roofSize = 0;
+    $scope.homeSize = 0;
 
   $scope.goBack = function() {
     $ionicHistory.goBack();
@@ -121,11 +124,79 @@ angular.module('starter.controllers', [])
   $scope.saveAndContinue = function() {
     $state.go('app.tilt');
   }
+    function initialize() {
+      var myLatlng = new google.maps.LatLng(33.053513, -80.136530);
+      var geocoder = new google.maps.Geocoder;
+      var mapOptions = {
+        center: myLatlng,
+        zoom: 20,
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        tilt: 0
+      };
+      var map = new google.maps.Map(document.getElementById("map"),
+          mapOptions);
+      //Marker + infowindow + angularjs compiled ng-click
+      var contentString = "<div><a ng-click='clickTest()'>Click me!</a></div>";
+
+      var infowindow = new google.maps.InfoWindow({
+        content: $compile(contentString)($scope)[0]
+      });
+
+      var marker;
+
+      geocoder.geocode({'address': $rootScope.figures.address },
+                       function(results, status) {
+
+        if (status == google.maps.GeocoderStatus.OK) {
+
+          var coords = results[0].geometry.location;
+          map.setCenter(coords);
+          $rootScope.figures.latLan = Object.keys(coords).map(function(k){ return coords[k] }) + '';
+
+          marker = new google.maps.Marker({
+            position: myLa$rootScope.figures.latLan,
+            map: map
+          });
+        } else {
+          // add alert
+        }
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+      });
+
+      $scope.map = map;
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    $scope.centerOnMe = function() {
+      if(!$scope.map) {
+        return;
+      }
+
+      $scope.loading = $ionicLoading.show({
+        content: 'Getting current location...',
+        showBackdrop: false
+      });
+
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+        $scope.loading.hide();
+      }, function(error) {
+        alert('Unable to get location: ' + error.message);
+      });
+    };
+
+    $scope.clickTest = function() {
+      return function() {};
+    };
+
+    console.log($rootScope)
 })
 
-.controller('TiltCtrl', function($scope, $stateParams, $ionicHistory, $state, $cordovaDeviceMotion) {
-
-  console.log('TiltCtrl');
+.controller('TiltCtrl', function($scope, $stateParams, $ionicHistory, $state, $ionicPlatform, $cordovaDeviceMotion) {
 
   $scope.goBack = function() {
     $ionicHistory.goBack();
@@ -149,7 +220,8 @@ angular.module('starter.controllers', [])
   screen.orientation.addEventListener("change", show);
 
 
-  function onDeviceReady() {
+  $ionicPlatform.ready(function() {
+    return;
     console.log('navigator.accelerometer', navigator, navigator.accelerometer);
 
     navigator.accelerometer.getCurrentAcceleration(function(result) {
@@ -175,7 +247,7 @@ angular.module('starter.controllers', [])
       console.log('watchAcceleration error', error);
     }, { frequency: 20000 });
 
-  }
+  });
 
   // document.addEventListener('devicemotion', function(event) {
   //   var x = event.acceleration.x;
@@ -255,4 +327,5 @@ angular.module('starter.controllers', [])
     $ionicHistory.goBack();
   };
 });
-;
+
+
