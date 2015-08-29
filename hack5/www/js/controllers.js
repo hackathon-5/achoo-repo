@@ -53,4 +53,64 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+})
+
+
+.controller('TiltCtrl', function($scope, $stateParams, $cordovaDeviceMotion) {
+
+  console.log('TiltCtrl')
+
+  document.addEventListener("deviceready", function () {
+
+    $cordovaDeviceMotion.getCurrentAcceleration().then(function(result) {
+      var X = result.x;
+      var Y = result.y;
+      var Z = result.z;
+      var timeStamp = result.timestamp;
+      console.log('result', result);
+    }, function(err) {
+      // An error occurred. Show a message to the user
+    });
+
+  }, false);
+
+
+  // watch Acceleration
+  var options = { frequency: 20000 };
+
+  document.addEventListener("deviceready", function () {
+
+    var watch = $cordovaDeviceMotion.watchAcceleration(options);
+    if (watch) watch.then(
+      null,
+      function(error) {
+      // An error occurred
+      },
+      function(result) {
+        console.log('result2', result);
+        $scope.result = result;
+        var X = result.x;
+        var Y = result.y;
+        var Z = result.z;
+        var timeStamp = result.timestamp;
+    });
+
+
+    if (watch) watch.clearWatch();
+    // OR
+    if (watch) $cordovaDeviceMotion.clearWatch(watch)
+      .then(function(result) {
+        // success
+        console.log('result3', result);
+        $scope.result = result;
+
+        }, function (error) {
+        // error
+      });
+
+  }, false);
+
+
+
+})
+;
