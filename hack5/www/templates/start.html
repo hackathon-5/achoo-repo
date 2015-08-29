@@ -1,9 +1,25 @@
-<ion-view view-title="Welcome">
-  <ion-content style="background: url('img/splash-1.jpg') no-repeat top center fixed; -moz-background-size: cover; background-size: cover;">
-	<div style="margin-top: 300px; text-align: center; z-index: 2;">
-		<button ui-sref="app.trace" class="button button-calm">Get Started</button>
-	</div>
-	<label for="addressField" class="sr-only">Address</label>
-	<input type="text" id="addressField" g-places-autocomplete force-selection="true" ng-model="address" ng-change="onAddressChange()"/>
+<ion-view view-title="" style="background: url('img/splash-1.jpg') no-repeat top center fixed; -moz-background-size: cover; background-size: cover;">
+  <ion-content >
+  <div class="list" style="margin-top: 100px; z-index: 2; margin-right: 20px;">
+    <label class="item item-input item-stacked-label">
+      <span for="addressField" class="sr-only input-label">Search Address:</span>
+	  <input type="text" id="addressField" g-places-autocomplete force-selection="true" ng-model="address" ng-change="onAddressChange()"/>
+      <br />
+    </label>
+    <div style="text-align: center;">
+      <button ui-sref="app.trace" class="button button-calm">Get Started</button>
+    </div>
+  </div>
+
+
+<!--   div class="item item-input-inset">
+    <label class="item-input-wrapper">
+    Address
+      <input type="text" placeholder="Email">
+    </label>
+    <button class="button button-small">
+      Submit
+    </button>
+  </div> -->
   </ion-content>
 </ion-view>

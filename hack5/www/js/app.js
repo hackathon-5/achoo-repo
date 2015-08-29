@@ -54,12 +54,22 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'google.
       }
     }
   })
+
   .state('app.tilt', {
     url: '/tilt',
     views: {
       'menuContent': {
         templateUrl: 'templates/tilt.html',
         controller: 'TiltCtrl'
+      }
+    }
+  })
+  .state('app.results', {
+    url: '/results',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/results.html',
+        controller: 'ResultsCtrl'
       }
     }
   })

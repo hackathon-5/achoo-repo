@@ -2,18 +2,27 @@
   <ion-content>
     <div class="main-wrap">
       <h3>Tell us the angle of the roof</h3>
-      <div class="list">
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">Angle of roof (in degrees)</span>
-        <input type="text" placeholder="ex. 60">
-      </label>
-    </div>
+      <div class="list list-inset">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Angle of roof (in degrees)</span>
+          <input type="text" placeholder="ex. 60">
+        </label>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="button button-block button-stable" ng-click="goBack()" style="margin: 0;">
+            &#10094; Back
+          </button>
+        </div>
+        <div class="col">
+          <button class="button button-block button-assertive" ng-click="saveAndContinue()" style="margin: 0;">
+            Next &#10095;
+          </button>
+        </div>
+      </div>
     </div>
   </ion-content>
-  <div class="bar bar-footer bar-clear">
-    <!-- <div class="title">Footer</div> -->
-    <button class="button button-full button-assertive" style="margin: 0;">
-      Next &#10095;
-    </button>
-  </div>
+  <!-- <div class="bar bar-footer bar-clear">
+    <div class="title">Footer</div>
+  </div> -->
 </ion-view>
